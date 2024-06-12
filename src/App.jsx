@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
-    <div className="bg-slack-Auberginie m-0 overflow-hidden">
+    <div className="m-0 overflow-hidden">
       <BrowserRouter>
         <Routes>
           <Route index element={<HomePage />} />
