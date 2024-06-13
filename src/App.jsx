@@ -6,17 +6,27 @@ import store from "./app/store";
 import { useSelector } from "react-redux";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
+import { useEffect, useState } from "react";
+
+
 const App = () => {
+  const { user } = useSelector((state) => state.user);
+  console.log(user.refreshToken);
+  console.log("USER FROM REDUX ", );
+
   return (
     <div className="m-0 h-[calc(100vh-10px)] overflow-hidden bg-blue-900">
+      
       <BrowserRouter>
-        <Provider store={store}>
-          <Routes>
-            <Route index element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/home" element={<HomePage />} />
-          </Routes>
-        </Provider>
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <Navigate to="/home" /> : <Signin />}
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route index path="/home" element={<HomePage />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

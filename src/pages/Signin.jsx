@@ -4,24 +4,26 @@ import { setCurrentUser } from "../features/userSlice";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Signin = () => {
   const naviagte = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //   const setUser = (id) => {
 
-  //   };
   const handleSignIn = async () => {
-    signInWithEmailAndPassword(auth, email, password).then((auth) => {
-      const _currentUser = auth?.user;
-      console.log(_currentUser)
-      dispatch(setCurrentUser({
-        id: _currentUser?.uid
-      }))
-    });
+    try {
+      await signInWithEmailAndPassword(auth, email, password).then((auth) => {
+        const _currentUser = auth?.user;
+        dispatch(
+          setCurrentUser(_currentUser),
+        );
+        naviagte("/home");
+      });
+    } catch (error) {
+      toast.error(error);
+    }
   };
   return (
     <div className="mx-auto flex h-[100vh] items-center justify-center bg-slack-Auberginie">

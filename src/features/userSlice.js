@@ -3,12 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    userId: null,
+    user: {},
   },
 
   reducers: {
     setCurrentUser: (state, action) => {
-      state.userId = action.payload.id;
+      state.user = action.payload;
+    },
+    logoutUser: (state, action) => {
+      state.user = {};
     },
   },
 });
@@ -16,5 +19,3 @@ export const userSlice = createSlice({
 export const { setCurrentUser } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;
-
-
