@@ -4,12 +4,14 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { setDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -27,6 +29,7 @@ const Signup = () => {
           email,
         });
       }
+      navigate("/signin");
     } catch (error) {
       console.log(error);
       toast.error("Email Already in use!", {
@@ -99,7 +102,11 @@ const Signup = () => {
         >
           SIGN UP
         </button>
+        <div>
+          Already a member <a href="/signin">Sign IN here</a>
+        </div>
       </div>
+
       <ToastContainer />
     </div>
   );
