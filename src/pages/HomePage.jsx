@@ -4,16 +4,19 @@ import Header from "./../components/Header";
 import Main from "./../components/Main";
 import { auth } from "../firebase/firebase";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   useEffect(() => {
-    const _user = auth.currentUser;
-
-    if (_user === null) {
-      navigate("/signin");
+    if (user) {
+      if (!user.isAuthenticated) {
+        navigate("/signin");
+      }
     }
-  }, []);
+  }, [user.isAuthenticated]);
   return (
     <div>
       <Header />

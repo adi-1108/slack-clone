@@ -1,30 +1,30 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../features/userSlice";
+import { login, logout } from "../features/userSlice";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 const Signin = () => {
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password).then((auth) => {
-        const _currentUser = auth?.user;
-        dispatch(
-          setCurrentUser(_currentUser),
-        );
-        naviagte("/home");
+  const handleSignIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
       });
-    } catch (error) {
-      toast.error(error);
-    }
   };
+
   return (
     <div className="mx-auto flex h-[100vh] items-center justify-center bg-slack-Auberginie">
       <div className="flex min-w-[30vw] flex-col rounded-xl bg-slack-green p-8 shadow-md">
@@ -62,7 +62,10 @@ const Signin = () => {
           className="mt-5 w-full rounded-full bg-slack-blue px-6 py-2 font-slackfont font-semibold text-white shadow-lg transition-all active:scale-95 active:outline-none"
           onClick={handleSignIn}
         >
-          SIGN UP
+          SIGN In
+        </button>
+        <button className="mt-5 w-full rounded-full bg-slack-blue px-6 py-2 font-slackfont font-semibold text-white shadow-lg transition-all active:scale-95 active:outline-none">
+          LogOUt
         </button>
       </div>
       <ToastContainer />

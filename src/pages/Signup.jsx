@@ -21,14 +21,6 @@ const Signup = () => {
       toast.success("User Signed up succesfully", {
         position: "top-right",
       });
-
-      if (user) {
-        await setDoc(doc(db, "Users", user.uid), {
-          firstName: fname,
-          lastName: lname,
-          email,
-        });
-      }
       navigate("/signin");
     } catch (error) {
       console.log(error);

@@ -5,24 +5,13 @@ import {
 } from "@heroicons/react/24/solid";
 import ChannelCard from "./ChannelCard";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { enterRoom } from "../features/appSlice";
+
 
 const channels = ["Youtube", "SLACK", "ADITYA"];
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
   const [channelShow, setChannelShow] = useState(true);
 
-  const selectChannel = () => {
-    if (id) {
-      dispatch(
-        enterRoom({
-          roomId: id,
-        }),
-      );
-    }
-  };
   return (
     <div className="bg-slack-Auberginie">
       <div className="flex items-center justify-between border-b-2 p-4">
