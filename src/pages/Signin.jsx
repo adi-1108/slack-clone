@@ -1,8 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../features/userSlice";
 import { auth } from "../firebase/firebase";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -11,12 +11,17 @@ const Signin = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const user = useSelector((state) => state.user);
+  console.log("User in sign in", user);
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+      .then(({ user }) => {
+        console.log(user)
+        dispatch(login(user));
+        navigate("/", {
+          replace: true,
+        });
         // ...
       })
       .catch((error) => {

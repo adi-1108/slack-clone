@@ -12,19 +12,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(user);
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(login(user));
-        return;
-      } else {
-        dispatch(logout(user));
-      }
-    });
 
-    return () => unsubscribe();
-  }, [dispatch]);
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
   return (
     <div className="m-0 h-[calc(100vh-10px)] overflow-hidden bg-blue-900">
@@ -33,9 +24,9 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route
-            index
+            path="/"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={user.isAuthenticated}>
                 <HomePage />
               </ProtectedRoute>
             }

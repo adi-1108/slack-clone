@@ -5,12 +5,16 @@ import {
 } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 const Header = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleSignOut = () => {
     dispatch(logout());
+    signOut(auth)
+      .then(() => console.log("SignOUt"))
+      .catch((e) => console.log(e.message));
   };
   return (
     <div className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10">
