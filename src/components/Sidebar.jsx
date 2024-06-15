@@ -17,6 +17,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { data } from "autoprefixer";
 
 const Sidebar = () => {
   const [channelShow, setChannelShow] = useState(true);
@@ -31,9 +32,15 @@ const Sidebar = () => {
       channelName: channelNameInput,
     };
     await setDoc(doc(db, "channels", newChannel.id), newChannel);
-    const docRef = doc(db, "channels", newChannel.id);
-    const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
+    const _data = [];
+    const q = query(collection(db, "channels"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      _data.push(doc.data());
+    });
+    // setChannels((prev) => [...channels, data]);
+    console.log(_data)
+    console.log(channels);
     setChannelNameInput("");
     setShowModal(false);
   };
@@ -42,24 +49,24 @@ const Sidebar = () => {
     setShowModal(!showModal);
   };
 
-  useEffect(() => {
-    const getChannels = async () => {
-      const _data = [];
-      const q = query(collection(db, "channels"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        _data.push(doc.data());
-      });
-      // setChannels((prev) => [...prev, ..._data]);
-      console.log("DAATATA", _data);
-      // const docRef = doc(db, "channels", newChannel.id);
-      // const docSnap = await getDoc(docRef);
-      // if (docSnap.exists()) {
-      //   setChannels([...channels, docSnap.data()]);
-      // }
-    };
-    getChannels();
-  }, []);
+  // useEffect(() => {
+  //   const getChannels = async () => {
+  //     const _data = [];
+  //     const q = query(collection(db, "channels"));
+  //     const querySnapshot = await getDocs(q);
+  //     querySnapshot.forEach((doc) => {
+  //       _data.push(doc.data());
+  //     });
+  //     // setChannels((prev) => [...prev, ..._data]);
+  //     console.log("DAATATA", _data);
+  //     // const docRef = doc(db, "channels", newChannel.id);
+  //     // const docSnap = await getDoc(docRef);
+  //     // if (docSnap.exists()) {
+  //     //   setChannels([...channels, docSnap.data()]);
+  //     // }
+  //   };
+  //   getChannels();
+  // }, []);
   return (
     <div className="bg-slack-Auberginie">
       <div className="flex items-center justify-between border-b-2 p-4">
@@ -94,7 +101,7 @@ const Sidebar = () => {
           </div>
           <div className="overflow-y-scroll">
             {channels.map((item) => (
-              <ChannelCard channelName={item.channelName} />
+              <ChannelCard channel={item} />
             ))}
           </div>
         </div>
