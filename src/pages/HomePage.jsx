@@ -10,13 +10,11 @@ import { useSelector } from "react-redux";
 const HomePage = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  useEffect(() => {
-    if (user) {
-      if (!user.isAuthenticated) {
-        navigate("/signin");
-      }
-    }
-  }, [user.isAuthenticated]);
+  
+  useEffect(()=>{
+    if(!user.isAuthenticated)
+      navigate('/signin')
+  },[])
   return (
     <div>
       <Header />

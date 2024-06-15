@@ -13,7 +13,6 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     logout: (state, action) => {
-      debugger;
       state.isAuthenticated = false;
       state.user = null;
     },
