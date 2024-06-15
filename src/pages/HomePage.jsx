@@ -18,11 +18,11 @@ const HomePage = () => {
   return (
     <div>
       <Header />
-      <div className="flex items-center justify-between">
+      <div className="flex  justify-between">
         <div className="flex-[0.3]">
           <Sidebar />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex justify-center items-center">
           <Main />
         </div>
       </div>
