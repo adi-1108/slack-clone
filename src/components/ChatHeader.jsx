@@ -3,6 +3,7 @@ import { StarIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import firebase from "firebase/compat/app";
 const ChatHeader = () => {
   const { roomID } = useSelector((state) => state.app);
   const [channelName, setChannelName] = useState("");
@@ -10,7 +11,7 @@ const ChatHeader = () => {
     const getChannelName = async () => {
       const docRef = doc(db, "channels", roomID);
       const docSnap = await getDoc(docRef);
-
+      
       if (docSnap.exists()) {
         setChannelName(docSnap.data().channelName);
       } else {
