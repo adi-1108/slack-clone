@@ -15,20 +15,27 @@ import {
   onSnapshot,
   collection,
   getDocs,
+  where,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { enterRoom } from "../features/appSlice";
 
 const Sidebar = () => {
-  const [channelShow, setChannelShow] = useState(true);
+  const [channelShow, setChannelShow] = useState(false);
   const [channels, setChannels] = useState([]);
   const [channelNameInput, setChannelNameInput] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [userName, setUserName] = useState("");
+  const currentUser = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const handleAddChannel = async (e) => {
     e.preventDefault();
     const newChannel = {
       id: faker.string.numeric(7),
       channelName: channelNameInput,
+      userID: currentUser.uid,
     };
     await setDoc(doc(db, "channels", newChannel.id), newChannel);
     setChannelNameInput("");
@@ -40,20 +47,38 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "channels")), (snapshot) => {
-      let channelData = [];
-      snapshot.forEach((doc) => {
-        channelData.push({ ...doc.data() });
-      });
-      setChannels(channelData);
-    });
+    onSnapshot(
+      query(collection(db, "channels"), where("userID", "==", currentUser.uid)),
+      (snapshot) => {
+        let channelData = [];
+        snapshot.forEach((doc) => {
+          channelData.push({ ...doc.data() });
+        });
+        setChannels(channelData);
+      },
+    );
+    const getUser = async () => {
+      const userID = currentUser.uid;
+      const docRef = doc(db, "Users", userID);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUserName(`${docSnap.data().fname} ${docSnap.data().lname}`);
+      } else {
+        console.log("NO DOC FOUND");
+      }
+    };
+    setTimeout(() => {
+      getUser();
+    }, 400);
   }, []);
+
   return (
-    <div className="bg-slack-Auberginie">
+    <div className="h-[calc(100vh-80px)] bg-slack-Auberginie">
       <div className="flex items-center justify-between border-b-2 p-4">
         <div className="flex flex-col items-start justify-center">
-          <h3 className="text-white">CHANNEL NAME</h3>
-          <p className="text-white">MY NAME</p>
+          <h3 className="text-white">Channel Name</h3>
+          <p className="text-white">{userName}</p>
         </div>
         <PencilSquareIcon className="h-6 w-6 cursor-pointer text-white" />
       </div>
@@ -82,7 +107,9 @@ const Sidebar = () => {
           </div>
 
           {channels?.map((item) => {
-            return <ChannelCard key={item.id} name={item.channelName} />;
+            return (
+              <ChannelCard id={item.id} key={item.id} name={item.channelName} />
+            );
           })}
         </div>
       )}

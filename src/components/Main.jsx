@@ -1,5 +1,21 @@
+import { useSelector } from "react-redux";
+import ChatHeader from "./ChatHeader";
+import ChatInput from "./ChatInput";
+
 const Main = () => {
-  return <div className="m-2 h-[calc(100vh-100px)] w-full rounded-3xl bg-blue-950 p-4 ">Main</div>;
+  const { roomID } = useSelector((state) => state.app);
+  return (
+    <>
+      {roomID ? (
+        <div className="h-[calc(100vh-80px)] w-full">
+          <ChatHeader />
+          <ChatInput />
+        </div>
+      ) : (
+        <p>Select a room to chat</p>
+      )}
+    </>
+  );
 };
 
 export default Main;

@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 
 import userReducer from "../features/userSlice";
 import storage from "redux-persist/lib/storage";
+import appReducer from "../features/appSlice";
 
 const userPersistConfig = {
   key: "root",
@@ -13,6 +14,7 @@ const persistedReducer = persistReducer(userPersistConfig, userReducer);
 
 const rootReducer = combineReducers({
   user: persistedReducer,
+  app: appReducer,
 });
 
 const store = configureStore({

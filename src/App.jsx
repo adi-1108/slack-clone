@@ -25,7 +25,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="m-0 h-[100vh] overflow-hidden bg-blue-900">
+    <div className="m-0 h-[100vh] overflow-hidden">
       <BrowserRouter>
         <Routes>
           <Route path="*" element={<PageNotFound /> } />
