@@ -15,10 +15,9 @@ const Signin = () => {
 
   const handleSignIn = async () => {
     await signInWithEmailAndPassword(auth, email, password).then((user) => {
-      console.log(user.user);
       const userDetails = user.user;
       const _user = {
-        displayName: userDetails.displayName,
+        displayName: auth.currentUser.displayName,
         email: userDetails.email,
         uid: userDetails.uid,
       };
@@ -70,8 +69,13 @@ const Signin = () => {
         >
           SIGN In
         </button>
-        <button className="mt-5 w-full rounded-full bg-slack-blue px-6 py-2 font-slackfont font-semibold text-white shadow-lg transition-all active:scale-95 active:outline-none">
-          LogOUt
+        <button
+          onClick={() => {
+            navigate("/signup");
+          }}
+          className="mt-5 w-full rounded-full bg-slack-blue px-6 py-2 font-slackfont font-semibold text-white shadow-lg transition-all active:scale-95 active:outline-none"
+        >
+          SIGN Up
         </button>
       </div>
       <ToastContainer />

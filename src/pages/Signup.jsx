@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +19,9 @@ const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
       console.log("Register succesfully");
+      await updateProfile(auth.currentUser, {
+        displayName: fname + " " + lname,
+      });
       await setDoc(doc(db, "Users", user.uid), {
         email: user.email,
         fname: fname,

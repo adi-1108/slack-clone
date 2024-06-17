@@ -90,7 +90,7 @@ const Sidebar = () => {
         />
         <div className="flex flex-1 flex-col items-start justify-center pl-5">
           <h3 className="font-slackfont text-white">CHANNEL NAME</h3>
-          <p className="font-slackfont text-white">Aditya Vishwakarma</p>
+          <p className="font-slackfont text-white">{userName}</p>
         </div>
       </div>
 

@@ -20,7 +20,7 @@ const ChatInput = ({ channelName }) => {
       {
         message: inputRef.current.value,
         timestamp: Timestamp.now(),
-        userName: _cuurentUser.uid,
+        userName: _cuurentUser.displayName,
       },
     );
     inputRef.current.value = "";
