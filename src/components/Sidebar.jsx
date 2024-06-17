@@ -18,7 +18,7 @@ import {
   where,
 } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { enterRoom } from "../features/appSlice";
 
 const Sidebar = () => {
@@ -27,8 +27,8 @@ const Sidebar = () => {
   const [channelNameInput, setChannelNameInput] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
+  const [channelID, setChannelID] = useState(0);
   const currentUser = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
 
   const handleAddChannel = async (e) => {
     e.preventDefault();
@@ -37,9 +37,23 @@ const Sidebar = () => {
       channelName: channelNameInput,
       userID: currentUser.uid,
     };
-    await setDoc(doc(db, "channels", newChannel.id), newChannel);
-    setChannelNameInput("");
-    setShowModal(false);
+    if (channelNameInput !== "") {
+      await setDoc(doc(db, "channels", newChannel.id), newChannel);
+      setChannelNameInput("");
+      setShowModal(false);
+    }
+
+    if (channelID !== 0) {
+      const docRef = doc(db, "channels", channelID);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log(docSnap.data());
+        setChannels((prev) => [...prev, docSnap.data()]);
+      } else {
+        console.log("No such Document!");
+      }
+    }
   };
 
   const toggleModal = () => {
@@ -55,6 +69,7 @@ const Sidebar = () => {
           channelData.push({ ...doc.data() });
         });
         setChannels(channelData);
+        
       },
     );
     const getUser = async () => {
@@ -126,6 +141,15 @@ const Sidebar = () => {
           <input
             value={channelNameInput}
             onChange={(e) => setChannelNameInput(e.target.value)}
+            type="text"
+            className="rounded-full px-4 py-2 font-slackfont shadow-lg focus:outline-none"
+          />
+          <label className="mt-3 pl-4 font-slackfont font-semibold" htmlFor="">
+            Or a Channel ID
+          </label>
+          <input
+            value={channelID}
+            onChange={(e) => setChannelID(e.target.value)}
             type="text"
             className="rounded-full px-4 py-2 font-slackfont shadow-lg focus:outline-none"
           />

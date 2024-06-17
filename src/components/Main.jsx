@@ -29,9 +29,11 @@ const Main = () => {
       {roomID ? (
         <div className="h-[calc(100vh-80px)] w-full">
           <ChatHeader />
-          {messages?.map((item) => (
-            <Message obj={item} />
-          ))}
+          <div className="overflow-y-scroll">
+            {messages?.map((item) => (
+              <Message obj={item} />
+            ))}
+          </div>
           <ChatInput />
         </div>
       ) : (
