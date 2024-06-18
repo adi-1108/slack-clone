@@ -7,7 +7,7 @@ import ChannelCard from "./ChannelCard";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Modal from "./Modal";
-import { query } from "firebase/database";
+import { query, update } from "firebase/database";
 import {
   doc,
   getDoc,
@@ -16,9 +16,11 @@ import {
   collection,
   getDocs,
   where,
+  updateDoc,
+  or,
 } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { enterRoom } from "../features/appSlice";
 
 const Sidebar = () => {
@@ -35,7 +37,8 @@ const Sidebar = () => {
     const newChannel = {
       id: faker.string.numeric(7),
       channelName: channelNameInput,
-      userID: currentUser.uid,
+      currentUser: currentUser.uid,
+      otherUser: [],
     };
     if (channelNameInput !== "") {
       await setDoc(doc(db, "channels", newChannel.id), newChannel);
@@ -48,8 +51,9 @@ const Sidebar = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log(docSnap.data());
-        setChannels((prev) => [...prev, docSnap.data()]);
+        await updateDoc(doc(db, "channels", channelID), {
+          otherUser: [...docSnap.data().otherUser, currentUser.uid],
+        });
       } else {
         console.log("No such Document!");
       }
@@ -61,17 +65,35 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    onSnapshot(
-      query(collection(db, "channels"), where("userID", "==", currentUser.uid)),
-      (snapshot) => {
-        let channelData = [];
-        snapshot.forEach((doc) => {
-          channelData.push({ ...doc.data() });
-        });
-        setChannels(channelData);
-        
-      },
+    // onSnapshot(
+    //   query(
+    //     collection(db, "channels"),
+    //     where("currentUser", "==", currentUser.uid),
+    //   ),
+    //   (snapshot) => {
+    //     let channelData = [];
+    //     snapshot.forEach((doc) => {
+    //       channelData.push({ ...doc.data() });
+    //     });
+    //     setChannels(channelData);
+    //   },
+    // );
+
+    const userQuery = query(
+      collection(db, "channels"),
+      or(
+        where("currentUser", "==", currentUser.uid),
+        where("otherUser", "array-contains", currentUser.uid),
+      ),
     );
+    onSnapshot(userQuery, (snapshot) => {
+      let channelData = [];
+      snapshot.forEach((doc) => {
+        channelData.push({ ...doc.data() });
+      });
+      setChannels(channelData);
+    });
+
     const getUser = async () => {
       const userID = currentUser.uid;
       const docRef = doc(db, "Users", userID);

@@ -7,16 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
 import { auth } from "../firebase/firebase";
 import { signOut } from "firebase/auth";
+import { resetRoom } from "../features/appSlice";
+
 import { useNavigate } from "react-router-dom";
+import { appSlice } from "./../features/appSlice";
 
 const Header = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
     auth.signOut().then(() => console.log("User signed out"));
     dispatch(logout());
+    dispatch2(resetRoom());
     navigate("/signin");
   };
 
