@@ -3,18 +3,22 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import Message from "./Message";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 const Main = () => {
   const { roomID } = useSelector((state) => state.app);
   const user = useSelector((state) => state.user.user);
-  console.log("ROOM FROM REDUX", roomID);
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     if (!roomID) return;
-    onSnapshot(collection(db, "rooms", roomID, "messages"), (snapShot) => {
+    const q = query(
+      collection(db, "rooms", roomID, "messages"),
+      orderBy("timestamp"),
+    );
+    onSnapshot(q, (snapShot) => {
       let messageData = [];
       snapShot.forEach((doc) => {
         messageData.push({ ...doc.data() });
@@ -27,9 +31,9 @@ const Main = () => {
   return (
     <>
       {roomID ? (
-        <div className="h-[calc(100vh-80px)] w-full">
+        <div className="h-[calc(100vh-80px)] w-full overflow-scroll pb-28">
           <ChatHeader />
-          <div className="overflow-y-scroll">
+          <div className="">
             {messages?.map((item) => (
               <Message obj={item} />
             ))}

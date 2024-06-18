@@ -54,6 +54,9 @@ const Sidebar = () => {
         await updateDoc(doc(db, "channels", channelID), {
           otherUser: [...docSnap.data().otherUser, currentUser.uid],
         });
+        setChannelNameInput("");
+        setChannelID(0);
+        setShowModal(false);
       } else {
         console.log("No such Document!");
       }
