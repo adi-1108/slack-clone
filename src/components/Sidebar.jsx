@@ -31,6 +31,7 @@ const Sidebar = () => {
   const [userName, setUserName] = useState("");
   const [channelID, setChannelID] = useState(0);
   const currentUser = useSelector((state) => state.user.user);
+  const search = useSelector((state) => state.search);
 
   const handleAddChannel = async (e) => {
     e.preventDefault();
@@ -62,11 +63,12 @@ const Sidebar = () => {
       }
     }
   };
-
+  useEffect(() => {
+    console.log("RERENDER");
+  }, []);
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
   useEffect(() => {
     // onSnapshot(
     //   query(
@@ -145,12 +147,25 @@ const Sidebar = () => {
               Add a Channel
             </h3>
           </div>
-
-          {channels?.map((item) => {
-            return (
-              <ChannelCard id={item.id} key={item.id} name={item.channelName} />
-            );
-          })}
+          <div>
+            {search.searchAvailable
+              ? search.search_channels[0].map((item) => (
+                  <ChannelCard
+                    id={item.id}
+                    key={item.id}
+                    name={item.channelName}
+                  />
+                ))
+              : channels?.map((item) => {
+                  return (
+                    <ChannelCard
+                      id={item.id}
+                      key={item.id}
+                      name={item.channelName}
+                    />
+                  );
+                })}
+          </div>
         </div>
       )}
 
