@@ -5,6 +5,7 @@ import { auth } from "../firebase/firebase";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Loading from "../components/Loading";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -12,8 +13,10 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
+    setLoading(true);
     await signInWithEmailAndPassword(auth, email, password).then((user) => {
       const userDetails = user.user;
       const _user = {
@@ -23,12 +26,17 @@ const Signin = () => {
       };
       navigate("/home");
       dispatch(login(_user));
+      setLoading(false);
+    }).catch(() => {
+      setLoading(false);
     });
   };
 
   useEffect(() => {
     if (user.isAuthenticated) navigate("/home");
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="mx-auto flex h-[100vh] items-center justify-center bg-slack-Auberginie">

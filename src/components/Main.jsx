@@ -5,15 +5,18 @@ import Message from "./Message";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import Loading from "./Loading";
 
 const Main = () => {
   const { roomID } = useSelector((state) => state.app);
   const user = useSelector((state) => state.user.user);
 
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!roomID) return;
+    setLoading(true);
     const q = query(
       collection(db, "rooms", roomID, "messages"),
       orderBy("timestamp"),
@@ -24,10 +27,12 @@ const Main = () => {
         messageData.push({ ...doc.data() });
       });
       setMessages(messageData);
+      setLoading(false);
     });
-
-    console.log(messages);
   }, [roomID]);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       {roomID ? (

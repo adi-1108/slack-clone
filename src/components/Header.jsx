@@ -24,6 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 import { addChannels, resetChannels } from "../features/searchSlice";
+import Loading from "./Loading";
 
 const Header = () => {
   const user = useSelector((state) => state.user);
