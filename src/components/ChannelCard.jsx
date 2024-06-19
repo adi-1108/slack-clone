@@ -4,11 +4,12 @@ import { enterRoom } from "../features/appSlice";
 import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const ChannelCard = ({ name, id }) => {
   const dispatch = useDispatch();
   const [showDelete, setShowDelete] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+
   const selectChannel = (id) => {
     if (id) {
       dispatch(
@@ -19,13 +20,9 @@ const ChannelCard = ({ name, id }) => {
     }
   };
 
-  const toggleModal = () => {
-    setShowModal(!showModal)
-  }
-
   const handleDeleteChannel = async () => {
-    await deleteDoc(doc(db, "channels", id));
-    console.log("Channel deleted succesfully");
+    if (confirm("Do you really want to delete this channel?"))
+      await deleteDoc(doc(db, "channels", id));
   };
 
   return (

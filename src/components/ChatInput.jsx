@@ -6,14 +6,14 @@ import { db } from "../firebase/firebase";
 import { faker } from "@faker-js/faker";
 
 const ChatInput = ({ channelName }) => {
-const roomID = useSelector((state) => state.app.roomID);
+  const roomID = useSelector((state) => state.app.roomID);
   const _cuurentUser = useSelector((state) => state.user.user);
   const inputRef = useRef(null);
   const sendMessage = async (e) => {
     e.preventDefault();
 
     if (!roomID) return;
-    console.log("Time stamp", Timestamp.now());
+
     await setDoc(
       doc(db, "rooms", roomID, "messages", faker.string.numeric(7)),
       {
@@ -23,7 +23,6 @@ const roomID = useSelector((state) => state.app.roomID);
       },
     );
     inputRef.current.value = "";
-    console.log("DATA PUSHED SUCCESFULLY");
   };
   return (
     <div className="px-10 py-3">

@@ -16,12 +16,12 @@ const ChatHeader = () => {
         setChannelName(docSnap.data().channelName);
       } else {
         // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        
       }
     };
 
     roomID ? getChannelName() : "";
-    console.log(roomID);
+    
   }, [roomID]);
   return (
     <div className="sticky top-0 shadow-lg bg-white flex items-center justify-between  px-8 py-6">
