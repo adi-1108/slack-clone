@@ -36,8 +36,9 @@ const Main = () => {
   return (
     <>
       {roomID ? (
-        <div className="h-[calc(100vh-80px)] w-full overflow-scroll pb-28">
+        <div className="scrollbar-hide h-[calc(100vh-80px)] w-full overflow-scroll pb-28">
           <ChatHeader />
+
           <div className="">
             {messages?.map((item) => (
               <Message obj={item} />

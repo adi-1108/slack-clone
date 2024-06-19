@@ -11,7 +11,7 @@ const ChatHeader = () => {
     const getChannelName = async () => {
       const docRef = doc(db, "channels", roomID);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         setChannelName(docSnap.data().channelName);
       } else {
@@ -24,7 +24,7 @@ const ChatHeader = () => {
     console.log(roomID);
   }, [roomID]);
   return (
-    <div className="flex items-center justify-between border-b-2 px-8 py-6">
+    <div className="sticky top-0 shadow-lg bg-white flex items-center justify-between  px-8 py-6">
       <div className="flex items-center justify-center gap-4">
         <strong>{channelName}</strong>
         <StarIcon className="h-6 w-6 cursor-pointer" />

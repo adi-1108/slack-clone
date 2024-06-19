@@ -6,25 +6,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
 import { auth, db } from "../firebase/firebase";
-import { signOut } from "firebase/auth";
+
 import { resetRoom } from "../features/appSlice";
 
 import { useNavigate } from "react-router-dom";
-import { appSlice } from "./../features/appSlice";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
-  doc,
-  endAt,
-  getDoc,
   getDocs,
   orderBy,
   query,
   startAt,
-  where,
 } from "firebase/firestore";
-import { addChannels, resetChannels } from "../features/searchSlice";
-import Loading from "./Loading";
+import {
+  addChannels,
+  addSearchChannels,
+  resetChannels,
+} from "../features/searchSlice";
 
 const Header = () => {
   const user = useSelector((state) => state.user);
@@ -32,46 +30,27 @@ const Header = () => {
   const dispatch2 = useDispatch();
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
-
+  const { currentChannels } = useSelector((state) => state.search);
   const handleSignOut = () => {
     auth.signOut().then(() => console.log("User signed out"));
     dispatch(logout());
     dispatch2(resetRoom());
     navigate("/signin");
   };
-
   useEffect(() => {
-    const debounceFetch = setTimeout(() => {
-      if (searchInput.length < 3) {
-        dispatch(resetChannels());
-      }
-      const searchChannels = async () => {
-        if (searchInput.length >= 3) {
-          const q = query(
-            collection(db, "channels"),
-            orderBy("channelName"),
-            startAt(searchInput.charAt(0)),
-          );
-
-          let channelData = [];
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => {
-            channelData.push({ ...doc.data() });
-          });
-
-          console.log(channelData);
-          setTimeout(() => {
-            dispatch(addChannels(channelData));
-          }, 300);
-        }
-      };
-
-      searchChannels();
-    }, 500);
-
-    return () => clearTimeout(debounceFetch);
+    if (searchInput.length > 2) {
+      
+      const result = currentChannels.filter(
+        (obj) =>
+          obj.channelName.toLowerCase().substring(0, searchInput.length) ===
+          searchInput.toLowerCase().substring(0, searchInput.length),
+      );
+      dispatch(addSearchChannels(result));
+      
+    } else {
+      dispatch(resetChannels());
+    }
   }, [searchInput]);
-
   return (
     <div className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10">
       <div className="flex items-center justify-start gap-5">

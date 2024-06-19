@@ -1,13 +1,12 @@
-import { FieldValue, Timestamp, doc, setDoc } from "firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
-import firebase from "firebase/compat/app";
-import { serverTimestamp } from "firebase/database";
+
 import { faker } from "@faker-js/faker";
 
 const ChatInput = ({ channelName }) => {
-  const roomID = useSelector((state) => state.app.roomID);
+const roomID = useSelector((state) => state.app.roomID);
   const _cuurentUser = useSelector((state) => state.user.user);
   const inputRef = useRef(null);
   const sendMessage = async (e) => {

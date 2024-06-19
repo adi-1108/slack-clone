@@ -6,14 +6,18 @@ import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 
 const Message = ({ obj }) => {
-  const date = obj.timestamp.toDate().toString().split(" ")[4];
+  const date =
+    obj.timestamp.toDate().toString().split(" ")[2] +
+    " " +
+    obj.timestamp.toDate().toString().split(" ")[1] +
+    " " +
+    obj.timestamp.toDate().toString().split(" ")[4];
   const { roomID } = useSelector((state) => state.app);
 
   const [detailsButtonShow, setDetailsButtonShow] = useState(false);
   const [showMessageOptions, setShowMessageOptions] = useState(false);
 
   const handleDeleteMessage = async () => {
-    
     // await deleteDoc(q);
   };
   return (
@@ -23,7 +27,7 @@ const Message = ({ obj }) => {
         setDetailsButtonShow(false);
         setShowMessageOptions(false);
       }}
-      className="flex flex-col items-start justify-center gap-3 rounded-lg px-8 py-6 shadow-sm transition-all hover:bg-slate-100"
+      className="m-3 flex flex-col items-start justify-center gap-3 rounded-xl px-6 py-6 shadow-md transition-all hover:bg-slate-100"
     >
       <div className="flex items-center justify-center gap-3">
         <UserCircleIcon className="h-12 w-12" />

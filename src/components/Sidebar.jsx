@@ -19,9 +19,9 @@ import {
   updateDoc,
   or,
 } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase";
-import { useSelector } from "react-redux";
-import { enterRoom } from "../features/appSlice";
+import { db } from "../firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { addChannels } from "../features/searchSlice";
 
 const Sidebar = () => {
   const [channelShow, setChannelShow] = useState(false);
@@ -32,6 +32,7 @@ const Sidebar = () => {
   const [channelID, setChannelID] = useState(0);
   const currentUser = useSelector((state) => state.user.user);
   const search = useSelector((state) => state.search);
+  const dispatch = useDispatch();
 
   const handleAddChannel = async (e) => {
     e.preventDefault();
@@ -59,31 +60,15 @@ const Sidebar = () => {
         setChannelID(0);
         setShowModal(false);
       } else {
-        console.log("No such Document!");
       }
     }
   };
-  useEffect(() => {
-    console.log("RERENDER");
-  }, []);
+
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  useEffect(() => {
-    // onSnapshot(
-    //   query(
-    //     collection(db, "channels"),
-    //     where("currentUser", "==", currentUser.uid),
-    //   ),
-    //   (snapshot) => {
-    //     let channelData = [];
-    //     snapshot.forEach((doc) => {
-    //       channelData.push({ ...doc.data() });
-    //     });
-    //     setChannels(channelData);
-    //   },
-    // );
 
+  useEffect(() => {
     const userQuery = query(
       collection(db, "channels"),
       or(
@@ -97,8 +82,8 @@ const Sidebar = () => {
         channelData.push({ ...doc.data() });
       });
       setChannels(channelData);
+      dispatch(addChannels(channelData));
     });
-
     const getUser = async () => {
       const userID = currentUser.uid;
       const docRef = doc(db, "Users", userID);
@@ -107,7 +92,6 @@ const Sidebar = () => {
       if (docSnap.exists()) {
         setUserName(`${docSnap.data().fname} ${docSnap.data().lname}`);
       } else {
-        console.log("NO DOC FOUND");
       }
     };
     setTimeout(() => {
@@ -119,10 +103,20 @@ const Sidebar = () => {
     <div className="h-[calc(100vh-80px)] bg-slack-Auberginie">
       <div className="flex items-center justify-between border-b-2 p-4">
         <div className="flex flex-col items-start justify-center">
-          <h3 className="text-white">Channel Name</h3>
-          <p className="text-white">{userName}</p>
+          <h3 className="font-slackfont font-semibold text-white">
+            Channel Name
+          </h3>
+          <p className="font-slackfont font-semibold text-white">{userName}</p>
         </div>
         <PencilSquareIcon className="h-6 w-6 cursor-pointer text-white" />
+      </div>
+
+      <div className="flex items-center justify-between border-b-2 p-4">
+        <div className="flex flex-col items-start justify-center">
+          <h3 className="font-slackfont font-semibold text-white">
+            Favourite 🌟
+          </h3>
+        </div>
       </div>
 
       <div className="flex items-center justify-between border-b-2 p-4">
@@ -147,25 +141,23 @@ const Sidebar = () => {
               Add a Channel
             </h3>
           </div>
-          <div>
-            {search.searchAvailable
-              ? search.search_channels[0].map((item) => (
+          {search.searchAvailable ? (
+            search.searchResults?.map((item) => (
+              <ChannelCard id={item.id} key={item.id} name={item.channelName} />
+            ))
+          ) : (
+            <div>
+              {channels?.map((item) => {
+                return (
                   <ChannelCard
                     id={item.id}
                     key={item.id}
                     name={item.channelName}
                   />
-                ))
-              : channels?.map((item) => {
-                  return (
-                    <ChannelCard
-                      id={item.id}
-                      key={item.id}
-                      name={item.channelName}
-                    />
-                  );
-                })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -173,7 +165,7 @@ const Sidebar = () => {
         <form
           onSubmit={handleAddChannel}
           className="flex flex-col gap-5"
-          action=""
+          
         >
           <label className="mt-3 pl-4 font-slackfont font-semibold" htmlFor="">
             Enter a Channel Name

@@ -1,9 +1,14 @@
-import { HashtagIcon } from "@heroicons/react/24/solid";
+import { HashtagIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { enterRoom } from "../features/appSlice";
+import { useState } from "react";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 const ChannelCard = ({ name, id }) => {
   const dispatch = useDispatch();
+  const [showDelete, setShowDelete] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const selectChannel = (id) => {
     if (id) {
       dispatch(
@@ -13,10 +18,22 @@ const ChannelCard = ({ name, id }) => {
       );
     }
   };
+
+  const toggleModal = () => {
+    setShowModal(!showModal)
+  }
+
+  const handleDeleteChannel = async () => {
+    await deleteDoc(doc(db, "channels", id));
+    console.log("Channel deleted succesfully");
+  };
+
   return (
     <div
       onClick={() => selectChannel(id)}
-      className="flex items-center justify-between gap-4 bg-slack-Auberginie px-4 py-3 transition-all hover:scale-[101%] hover:bg-slack-blue hover:shadow-md"
+      onMouseEnter={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
+      className="flex cursor-pointer items-center justify-between gap-4 bg-slack-Auberginie px-4 py-3 transition-all hover:scale-[101%] hover:bg-slack-blue hover:shadow-md"
     >
       <div className="flex items-center justify-center">
         <HashtagIcon className="h-4 w-4 text-white" />
@@ -25,6 +42,12 @@ const ChannelCard = ({ name, id }) => {
         </p>
       </div>
       <p className="font-slackfont font-semibold text-white">#{id}</p>
+      {showDelete && (
+        <TrashIcon
+          onClick={handleDeleteChannel}
+          className="h-6 w-6 cursor-pointer text-red-700"
+        />
+      )}
     </div>
   );
 };
