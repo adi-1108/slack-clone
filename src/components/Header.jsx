@@ -51,7 +51,7 @@ const Header = () => {
     }
   }, [searchInput]);
   return (
-    <Card className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10 bg-primary my-2 mx-2 ">
+    <Card className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10 bg-primary my-2 ">
       <div className="flex items-center justify-start gap-5">
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />

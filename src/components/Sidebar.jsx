@@ -22,6 +22,25 @@ import {
 import { db } from "../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addChannels } from "../features/searchSlice";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Card } from "./ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const Sidebar = () => {
   const [channelShow, setChannelShow] = useState(false);
@@ -100,73 +119,107 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-80px)] bg-slack-Auberginie">
-      <div className="flex items-center justify-between border-b-2 p-4">
-        <div className="flex flex-col items-start justify-center">
-          <h3 className="font-slackfont font-semibold text-white">
-            Channel Name
-          </h3>
-          <p className="font-slackfont font-semibold text-white">{userName}</p>
+    <Card className="bg-background h-[calc(100vh-110px)] p-2">
+      <Card className="bg- flex items-center justify-between border-b-2 p-4">
+        <div className="flex flex-col items-start justify-center gap-2 px-2">
+          <Label className="text-md">Channel Name</Label>
+          <Label className="text-md">{userName}</Label>
         </div>
         <PencilSquareIcon className="h-6 w-6 cursor-pointer text-white" />
-      </div>
+      </Card>
 
-      <div className="flex items-center justify-between border-b-2 p-4">
+      <Card className="my-4 flex items-center justify-between border-b-2 p-4">
         <div className="flex flex-col items-start justify-center">
-          <h3 className="font-slackfont font-semibold text-white">
-            Favourite 🌟
-          </h3>
+          <Label className="text-md px-2">Favourite 🌟</Label>
         </div>
-      </div>
+      </Card>
 
-      <div className="flex items-center justify-between border-b-2 p-4">
-        <ChevronDownIcon
-          className="ml-4 h-6 w-6 cursor-pointer text-white"
-          onClick={() => setChannelShow(!channelShow)}
-        />
-        <div className="flex flex-1 flex-col items-start justify-center pl-5">
-          <h3 className="font-slackfont text-white">CHANNEL NAME</h3>
-          <p className="font-slackfont text-white">{userName}</p>
-        </div>
-      </div>
-
-      {channelShow && (
-        <div>
-          <div className="flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all hover:bg-slack-Auberginie-darker">
-            <PlusIcon className="ml-4 h-6 w-6 cursor-pointer text-white" />
-            <h3
-              onClick={() => setShowModal(true)}
-              className="flex-1 pl-6 font-slackfont text-white"
+      <Card className="mt-3 flex items-center justify-between border-b-2 p-4">
+        <Accordion type="single" className="w-full" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger
+              className="pl-2"
+              onClick={() => setChannelShow(!channelShow)}
             >
-              Add a Channel
-            </h3>
-          </div>
-          {search.searchAvailable ? (
-            search.searchResults?.map((item) => (
-              <ChannelCard id={item.id} key={item.id} name={item.channelName} />
-            ))
-          ) : (
-            <div>
-              {channels?.map((item) => {
-                return (
-                  <ChannelCard
-                    id={item.id}
-                    key={item.id}
-                    name={item.channelName}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
+              Show Channels
+            </AccordionTrigger>
+            <AccordionContent>
+              {channelShow && (
+                <div>
+                  <div className="flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all hover:bg-slack-Auberginie-darker">
+                    <Dialog>
+                      <DialogTrigger className="w-full gap-3" asChild>
+                        <Button variant="outline">
+                          <PlusIcon className="h-6 w-6" />
+                          Add a channel
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Add a Channel</DialogTitle>
+                          <DialogDescription>
+                            You can add channel as per your choice or with a
+                            channel ID
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-center">
+                              Channel Name
+                            </Label>
+                            <Input
+                              placeholder="Channel Name"
+                              defaultValue=""
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="username" className="text-right">
+                              Channel ID
+                            </Label>
+                            <Input
+                            
+                              defaultValue="@peduarte"
+                              className="col-span-3"
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button type="submit">Save changes</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                  {search.searchAvailable ? (
+                    search.searchResults?.map((item) => (
+                      <ChannelCard
+                        id={item.id}
+                        key={item.id}
+                        name={item.channelName}
+                      />
+                    ))
+                  ) : (
+                    <div>
+                      {channels?.map((item) => {
+                        return (
+                          <ChannelCard
+                            id={item.id}
+                            key={item.id}
+                            name={item.channelName}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </Card>
 
       <Modal show={showModal} onClose={toggleModal}>
-        <form
-          onSubmit={handleAddChannel}
-          className="flex flex-col gap-5"
-          
-        >
+        <form onSubmit={handleAddChannel} className="flex flex-col gap-5">
           <label className="mt-3 pl-4 font-slackfont font-semibold" htmlFor="">
             Enter a Channel Name
           </label>
@@ -190,7 +243,7 @@ const Sidebar = () => {
           </button>
         </form>
       </Modal>
-    </div>
+    </Card>
   );
 };
 

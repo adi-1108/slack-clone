@@ -26,7 +26,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="m-0 h-[100vh] overflow-hidden">
+    <div className="m-0 h-[100vh] overflow-hidden mx-2">
       <ThemeProvider defaultTheme="dark">
         <BrowserRouter>
           <Routes>
