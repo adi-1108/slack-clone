@@ -6,9 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
 import { auth, db } from "../firebase/firebase";
-
 import { resetRoom } from "../features/appSlice";
-
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -23,6 +21,9 @@ import {
   addSearchChannels,
   resetChannels,
 } from "../features/searchSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "./ui/card";
+import {ModeToggle} from "./mode-toggle";
 
 const Header = () => {
   const user = useSelector((state) => state.user);
@@ -39,22 +40,23 @@ const Header = () => {
   };
   useEffect(() => {
     if (searchInput.length > 2) {
-      
       const result = currentChannels.filter(
         (obj) =>
           obj.channelName.toLowerCase().substring(0, searchInput.length) ===
           searchInput.toLowerCase().substring(0, searchInput.length),
       );
       dispatch(addSearchChannels(result));
-      
     } else {
       dispatch(resetChannels());
     }
   }, [searchInput]);
   return (
-    <div className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10">
+    <Card className="sticky top-0 z-50 grid grid-cols-3 bg-slack-Auberginie px-5 py-5 shadow-md md:px-10 bg-primary my-2 mx-2 ">
       <div className="flex items-center justify-start gap-5">
-        <UserCircleIcon className="h-8 w-8 text-white" />
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
         {user && (
           <button
             className="rounded-xl bg-red-700 px-4 py-2 font-slackfont text-white shadow-lg"
@@ -63,23 +65,24 @@ const Header = () => {
             Logout
           </button>
         )}
+        <ModeToggle />
       </div>
 
-      <div className="flex items-center justify-between rounded-xl border-2 px-4 py-2">
-        <MagnifyingGlassIcon className="h-6 w-6 text-white" />
+      <Card className="flex items-center justify-between rounded-xl border-2 px-4 py-2 ">
+        <MagnifyingGlassIcon className="h-6 w-6 text-card-foreground" />
         <input
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           type="text"
-          className="flex-1 bg-slack-Auberginie pl-4 font-slackfont text-gray-200 opacity-70 focus:opacity-100 focus:outline-none"
+          className="flex-1 bg-slack-Auberginie pl-4 bg-transparent text-card-foreground focus:outline-none"
           placeholder="Seach CHANNEL NAME"
         />
-      </div>
+      </Card>
 
       <div className="flex items-center justify-end">
         <QuestionMarkCircleIcon className="h-8 w-8 text-white" />
       </div>
-    </div>
+    </Card>
   );
 };
 

@@ -6,12 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
@@ -44,12 +48,12 @@ const Signup = () => {
   return (
     <div className="mx-auto flex h-[100vh] items-center justify-center bg-slack-Auberginie">
       <div className="flex min-w-[30vw] flex-col rounded-xl bg-slack-green p-8 shadow-md">
-        <h1 className="font-slackfont text-3xl font-bold">Sign Up</h1>
+        <h1 className="font-slackfont text-3xl font-bold">SIGN UP</h1>
 
         <div className="mt-4">
           <div className="flex flex-col items-start justify-center gap-3 px-4 py-2">
-            <p className="font-slackfont font-semibold">First Name</p>
-            <input
+            <Label className="font-slackfont font-semibold">First Name</Label>
+            <Input
               type="text"
               value={fname}
               onChange={(e) => {
@@ -60,8 +64,8 @@ const Signup = () => {
             />
           </div>
           <div className="flex flex-col items-start justify-center gap-3 px-4 py-2">
-            <p className="font-slackfont font-semibold">LastName</p>
-            <input
+            <Label className="font-slackfont font-semibold">LastName</Label>
+            <Input
               type="text"
               value={lname}
               onChange={(e) => {
@@ -73,8 +77,8 @@ const Signup = () => {
           </div>
 
           <div className="flex flex-col items-start justify-center gap-3 px-4 py-2">
-            <p className="font-slackfont font-semibold">Email</p>
-            <input
+            <Label className="font-slackfont font-semibold">Email</Label>
+            <Input
               type="text"
               value={email}
               onChange={(e) => {
@@ -86,8 +90,8 @@ const Signup = () => {
           </div>
 
           <div className="flex flex-col items-start justify-center gap-3 px-4 py-2">
-            <p className="font-slackfont font-semibold">Password</p>
-            <input
+            <Label className="font-slackfont font-semibold">Password</Label>
+            <Input
               type="password"
               value={password}
               onChange={(e) => {
@@ -99,14 +103,9 @@ const Signup = () => {
           </div>
         </div>
 
-        <button
-          className="mt-5 w-full rounded-full bg-slack-blue px-6 py-2 font-slackfont font-semibold text-white shadow-lg transition-all active:scale-95 active:outline-none"
-          onClick={handleSignUp}
-        >
-          SIGN UP
-        </button>
-        <div>
-          Already a member <a href="/signin">Sign IN here</a>
+        <Button className="mt-4" onClick={handleSignUp}>SIGN UP</Button>
+        <div className="mt-3">
+          Already a member <a href="/signin" className="underline">Sign in here</a>
         </div>
       </div>
 
