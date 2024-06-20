@@ -4,6 +4,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { deleteDoc, doc, getDoc, query, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
+import {Card} from "./ui/card";
 
 const Message = ({ obj }) => {
   const date =
@@ -21,13 +22,13 @@ const Message = ({ obj }) => {
     // await deleteDoc(q);
   };
   return (
-    <div
+    <Card
       onMouseEnter={() => setDetailsButtonShow(true)}
       onMouseLeave={() => {
         setDetailsButtonShow(false);
         setShowMessageOptions(false);
       }}
-      className="m-3 flex flex-col items-start justify-center gap-3 rounded-xl px-6 py-6 shadow-md transition-all hover:bg-slate-100"
+      className="m-3 flex flex-col scroll-smooth items-start justify-center gap-3 rounded-xl px-6 py-6 shadow-md transition-all "
     >
       <div className="flex items-center justify-center gap-3">
         <UserCircleIcon className="h-12 w-12" />
@@ -53,7 +54,7 @@ const Message = ({ obj }) => {
       <div className="flex flex-col">
         <p className="px-16">{obj.message}</p>
       </div>
-    </div>
+    </Card>
   );
 };
 

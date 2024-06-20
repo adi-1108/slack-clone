@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 
 import { faker } from "@faker-js/faker";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 
 const ChatInput = ({ channelName }) => {
   const roomID = useSelector((state) => state.app.roomID);
@@ -25,19 +28,23 @@ const ChatInput = ({ channelName }) => {
     inputRef.current.value = "";
   };
   return (
-    <div className="px-10 py-3">
-      <form onSubmit={sendMessage} action="">
+    <Card className="w-full px-6 py-4">
+      <form
+        className="flex items-center gap-x-2"
+        onSubmit={sendMessage}
+        action=""
+      >
         <input
           ref={inputRef}
-          className="fixed bottom-8 w-[60%] border-2 border-gray-400 px-6 py-4 font-slackfont shadow-md transition-all hover:bg-slate-100 focus:outline-none"
+          className="flex-1 bg-transparent transition-all focus:outline-none"
           type="text"
           placeholder={`message-ROOM`}
         />
-        <button className="hidden" onClick={sendMessage}>
+        <Button className="" onClick={sendMessage}>
           SEND
-        </button>
+        </Button>
       </form>
-    </div>
+    </Card>
   );
 };
 

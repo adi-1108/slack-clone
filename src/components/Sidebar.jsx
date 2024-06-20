@@ -46,7 +46,6 @@ const Sidebar = () => {
   const [channelShow, setChannelShow] = useState(false);
   const [channels, setChannels] = useState([]);
   const [channelNameInput, setChannelNameInput] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
   const [channelID, setChannelID] = useState(0);
   const currentUser = useSelector((state) => state.user.user);
@@ -119,7 +118,7 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <Card className="bg-background h-[calc(100vh-110px)] p-2">
+    <Card className="h-[calc(100vh-110px)] bg-background px-4 py-2">
       <Card className="bg- flex items-center justify-between border-b-2 p-4">
         <div className="flex flex-col items-start justify-center gap-2 px-2">
           <Label className="text-md">Channel Name</Label>
@@ -146,7 +145,7 @@ const Sidebar = () => {
             <AccordionContent>
               {channelShow && (
                 <div>
-                  <div className="flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all hover:bg-slack-Auberginie-darker">
+                  <div className="hover:bg-slack-Auberginie-darker flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all">
                     <Dialog>
                       <DialogTrigger className="w-full gap-3" asChild>
                         <Button variant="outline">
@@ -169,6 +168,10 @@ const Sidebar = () => {
                             </Label>
                             <Input
                               placeholder="Channel Name"
+                              value={channelNameInput}
+                              onChange={(e) =>
+                                setChannelNameInput(e.target.value)
+                              }
                               defaultValue=""
                               className="col-span-3"
                             />
@@ -178,14 +181,17 @@ const Sidebar = () => {
                               Channel ID
                             </Label>
                             <Input
-                            
-                              defaultValue="@peduarte"
+                              placeholder="Channel ID"
                               className="col-span-3"
+                              value={channelID}
+                              onChange={(e) => setChannelID(e.target.value)}
                             />
                           </div>
                         </div>
                         <DialogFooter>
-                          <Button type="submit">Save changes</Button>
+                          <Button onClick={handleAddChannel} type="submit">
+                            Save changes
+                          </Button>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -217,32 +223,6 @@ const Sidebar = () => {
           </AccordionItem>
         </Accordion>
       </Card>
-
-      <Modal show={showModal} onClose={toggleModal}>
-        <form onSubmit={handleAddChannel} className="flex flex-col gap-5">
-          <label className="mt-3 pl-4 font-slackfont font-semibold" htmlFor="">
-            Enter a Channel Name
-          </label>
-          <input
-            value={channelNameInput}
-            onChange={(e) => setChannelNameInput(e.target.value)}
-            type="text"
-            className="rounded-full px-4 py-2 font-slackfont shadow-lg focus:outline-none"
-          />
-          <label className="mt-3 pl-4 font-slackfont font-semibold" htmlFor="">
-            Or a Channel ID
-          </label>
-          <input
-            value={channelID}
-            onChange={(e) => setChannelID(e.target.value)}
-            type="text"
-            className="rounded-full px-4 py-2 font-slackfont shadow-lg focus:outline-none"
-          />
-          <button className="w-1/2 rounded-full bg-slack-blue py-2 font-slackfont font-semibold text-white shadow-lg hover:bg-slack-blue-dark">
-            Sumbit
-          </button>
-        </form>
-      </Modal>
     </Card>
   );
 };

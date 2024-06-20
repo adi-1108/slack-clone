@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import Loading from "./Loading";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Main = () => {
   const { roomID } = useSelector((state) => state.app);
@@ -36,10 +37,10 @@ const Main = () => {
   return (
     <>
       {roomID ? (
-        <div className="scrollbar-hide h-[calc(100vh-80px)] w-full overflow-scroll pb-28">
+        <div className="scrollbar-hide flex h-[calc(100vh-80px)] flex-col  px-4">
           <ChatHeader />
 
-          <div className="">
+          <div className="h-[calc(100vh-270px)] scrollbar-hide overflow-auto">
             {messages?.map((item) => (
               <Message obj={item} />
             ))}
@@ -47,7 +48,9 @@ const Main = () => {
           <ChatInput />
         </div>
       ) : (
-        <p>Select a room to chat</p>
+        <p className="flex h-[calc(100vh-110px)] w-full items-center justify-center">
+          Select a room to chat
+        </p>
       )}
     </>
   );

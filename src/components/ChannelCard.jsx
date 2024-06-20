@@ -5,6 +5,8 @@ import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Card } from "./ui/card";
+import { Label } from "./ui/label";
 
 const ChannelCard = ({ name, id }) => {
   const dispatch = useDispatch();
@@ -26,26 +28,26 @@ const ChannelCard = ({ name, id }) => {
   };
 
   return (
-    <div
+    <Card
       onClick={() => selectChannel(id)}
       onMouseEnter={() => setShowDelete(true)}
       onMouseLeave={() => setShowDelete(false)}
-      className="flex cursor-pointer items-center justify-between gap-4 bg-slack-Auberginie px-4 py-3 transition-all hover:scale-[101%] hover:bg-slack-blue hover:shadow-md"
+      className="mt-2 flex cursor-pointer items-center justify-between gap-4 px-3 py-4 hover:bg-primary"
     >
       <div className="flex items-center justify-center">
-        <HashtagIcon className="h-4 w-4 text-white" />
-        <p className="flex-1 pl-5 font-slackfont font-semibold text-white">
+        <HashtagIcon className="h-4 w-4" />
+        <Label className="font-slackfont flex-1 pl-5 font-semibold">
           {name}
-        </p>
+        </Label>
       </div>
-      <p className="font-slackfont font-semibold text-white">#{id}</p>
+      <Label className="font-slackfont font-semibold">#{id}</Label>
       {showDelete && (
         <TrashIcon
           onClick={handleDeleteChannel}
-          className="h-6 w-6 cursor-pointer text-red-700"
+          className="h-5 w-5 cursor-pointer object-contain text-white hover:text-red-500"
         />
       )}
-    </div>
+    </Card>
   );
 };
 
