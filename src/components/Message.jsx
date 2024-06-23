@@ -4,9 +4,10 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { deleteDoc, doc, getDoc, query, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
-import {Card} from "./ui/card";
+import { Card } from "./ui/card";
 
 const Message = ({ obj }) => {
+  console.log("ReRender");
   const date =
     obj.timestamp.toDate().toString().split(" ")[2] +
     " " +
@@ -28,7 +29,7 @@ const Message = ({ obj }) => {
         setDetailsButtonShow(false);
         setShowMessageOptions(false);
       }}
-      className="m-3 flex flex-col scroll-smooth items-start justify-center gap-3 rounded-xl px-6 py-6 shadow-md transition-all "
+      className="m-3 flex flex-col items-start justify-center gap-3 scroll-smooth rounded-xl px-6 py-6 shadow-md transition-all"
     >
       <div className="flex items-center justify-center gap-3">
         <UserCircleIcon className="h-12 w-12" />

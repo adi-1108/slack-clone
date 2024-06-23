@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import Message from "./Message";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import Loading from "./Loading";
@@ -14,7 +14,7 @@ const Main = () => {
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const msgRef = useRef(null);
   useEffect(() => {
     if (!roomID) return;
     setLoading(true);
@@ -29,6 +29,7 @@ const Main = () => {
       });
       setMessages(messageData);
       setLoading(false);
+      msgRef?.current?.scrollIntoView({ behavior: "smooth" });
     });
   }, [roomID]);
 
@@ -37,14 +38,15 @@ const Main = () => {
   return (
     <>
       {roomID ? (
-        <div className="scrollbar-hide flex h-[calc(100vh-80px)] flex-col  px-4">
+        <div className="flex h-[calc(100vh-80px)] flex-col px-4 scrollbar-hide">
           <ChatHeader />
 
-          <div className="h-[calc(100vh-270px)] scrollbar-hide overflow-auto">
+          <div className="h-[calc(100vh-270px)] overflow-auto pb-40 scrollbar-hide">
             {messages?.map((item) => (
-              <Message obj={item} />
+              <Message key={item.timestamp} obj={item} />
             ))}
           </div>
+          <div ref={msgRef}></div>
           <ChatInput />
         </div>
       ) : (

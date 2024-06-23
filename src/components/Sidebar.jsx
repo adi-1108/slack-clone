@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import CustomDialog from "./CustomDialog";
 
 const Sidebar = () => {
   const [channelShow, setChannelShow] = useState(false);
@@ -76,7 +77,6 @@ const Sidebar = () => {
         });
         setChannelNameInput("");
         setChannelID(0);
-        setShowModal(false);
       } else {
       }
     }
@@ -134,7 +134,11 @@ const Sidebar = () => {
       </Card>
 
       <Card className="mt-3 flex items-center justify-between border-b-2 p-4">
-        <Accordion type="single" className="w-full" collapsible>
+        <Accordion
+          type="single"
+          className="max-h-[calc(100vh-365px)] w-full"
+          collapsible
+        >
           <AccordionItem value="item-1">
             <AccordionTrigger
               className="pl-2"
@@ -144,57 +148,15 @@ const Sidebar = () => {
             </AccordionTrigger>
             <AccordionContent>
               {channelShow && (
-                <div>
-                  <div className="hover:bg-slack-Auberginie-darker flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all">
-                    <Dialog>
-                      <DialogTrigger className="w-full gap-3" asChild>
-                        <Button variant="outline">
-                          <PlusIcon className="h-6 w-6" />
-                          Add a channel
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Add a Channel</DialogTitle>
-                          <DialogDescription>
-                            You can add channel as per your choice or with a
-                            channel ID
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-center">
-                              Channel Name
-                            </Label>
-                            <Input
-                              placeholder="Channel Name"
-                              value={channelNameInput}
-                              onChange={(e) =>
-                                setChannelNameInput(e.target.value)
-                              }
-                              defaultValue=""
-                              className="col-span-3"
-                            />
-                          </div>
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="username" className="text-right">
-                              Channel ID
-                            </Label>
-                            <Input
-                              placeholder="Channel ID"
-                              className="col-span-3"
-                              value={channelID}
-                              onChange={(e) => setChannelID(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        <DialogFooter>
-                          <Button onClick={handleAddChannel} type="submit">
-                            Save changes
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                <div className="max-h-[calc(100vh-410px)] overflow-y-scroll scrollbar-hide">
+                  <div className="flex cursor-pointer items-center justify-between border-b-2 p-4 transition-all">
+                    <CustomDialog
+                      channelNameInput={channelNameInput}
+                      setChannelNameInput={setChannelNameInput}
+                      channelID={channelID}
+                      setChannelID={setChannelID}
+                      handleAddChannel={handleAddChannel}
+                    ></CustomDialog>
                   </div>
                   {search.searchAvailable ? (
                     search.searchResults?.map((item) => (
@@ -205,7 +167,7 @@ const Sidebar = () => {
                       />
                     ))
                   ) : (
-                    <div>
+                    <div className="max-h-[calc(100vh-410px)] overflow-y-auto scrollbar-hide">
                       {channels?.map((item) => {
                         return (
                           <ChannelCard

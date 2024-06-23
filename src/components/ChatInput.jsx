@@ -12,9 +12,9 @@ const ChatInput = ({ channelName }) => {
   const roomID = useSelector((state) => state.app.roomID);
   const _cuurentUser = useSelector((state) => state.user.user);
   const inputRef = useRef(null);
+
   const sendMessage = async (e) => {
     e.preventDefault();
-
     if (!roomID) return;
 
     await setDoc(
