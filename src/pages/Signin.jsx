@@ -10,8 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-
-
 const Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,8 +44,8 @@ const Signin = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="mx-auto flex h-[100vh] items-center justify-center bg-slack-Auberginie">
-      <div className="flex min-w-[30vw] flex-col rounded-xl bg-slate-900 p-8 shadow-md">
+    <div className="mx-auto flex h-[100vh] items-center justify-center">
+      <div className="flex min-w-[30vw] flex-col rounded-xl p-8 shadow-md">
         <h1 className="font-slackfont text-3xl font-bold">SIGN IN</h1>
 
         <div className="mt-4">
@@ -60,7 +58,7 @@ const Signin = () => {
                 setEmail(e.target.value);
               }}
               placeholder="Enter your email"
-              className="w-full rounded-lg border-2 px-4 py-2 font-slackfont focus:outline-none"
+              className="font-slackfont w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
             />
           </div>
 
@@ -73,12 +71,12 @@ const Signin = () => {
                 setPassword(e.target.value);
               }}
               placeholder="Enter your password"
-              className="w-full rounded-lg border-2 px-4 py-2 font-slackfont focus:outline-none"
+              className="font-slackfont w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-center py-3 pt-6 gap-4 px-4">
+        <div className="flex items-center justify-center gap-4 px-4 py-3 pt-6">
           <Button className="flex-1 text-white" onClick={handleSignIn}>
             Sign In
           </Button>
