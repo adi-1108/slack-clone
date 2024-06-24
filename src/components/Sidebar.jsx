@@ -124,7 +124,7 @@ const Sidebar = () => {
           <Label className="text-md">Channel Name</Label>
           <Label className="text-md">{userName}</Label>
         </div>
-        <PencilSquareIcon className="h-6 w-6 cursor-pointer text-white" />
+        <PencilSquareIcon className="h-6 w-6 cursor-pointer" />
       </Card>
 
       <Card className="my-4 flex items-center justify-between border-b-2 p-4">
