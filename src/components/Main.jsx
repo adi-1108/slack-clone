@@ -41,7 +41,7 @@ const Main = () => {
         <div className="flex h-[calc(100vh-80px)] flex-col px-4 scrollbar-hide">
           <ChatHeader />
 
-          <div className="h-[calc(100vh-270px)] overflow-auto scrollbar-hide">
+          <div className="h-[calc(100vh-300px)] overflow-auto scrollbar-hide">
             {messages?.map((item) => (
               <Message key={item.timestamp} obj={item} />
             ))}

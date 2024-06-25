@@ -5,18 +5,28 @@ import userReducer from "../features/userSlice";
 import storage from "redux-persist/lib/storage";
 import appReducer from "../features/appSlice";
 import searchReducer from "../features/searchSlice";
+import favouriteReducer from "@/features/favouriteSlice";
 
 const userPersistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(userPersistConfig, userReducer);
+const favouritePersistConfig = {
+  key: "fav",
+  storage,
+};
 
+const persistedReducer = persistReducer(userPersistConfig, userReducer);
+const persistedReducerFavourite = persistReducer(
+  favouritePersistConfig,
+  favouriteReducer,
+);
 const rootReducer = combineReducers({
   user: persistedReducer,
   app: appReducer,
   search: searchReducer,
+  favourite: persistedReducerFavourite,
 });
 
 const store = configureStore({

@@ -5,9 +5,9 @@ import { deleteDoc, doc, getDoc, query, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 import { Card } from "./ui/card";
+import { Label } from "./ui/label";
 
 const Message = ({ obj }) => {
-  console.log("ReRender");
   const date =
     obj.timestamp.toDate().toString().split(" ")[2] +
     " " +
@@ -39,12 +39,12 @@ const Message = ({ obj }) => {
           <div className="relative">
             <EllipsisVerticalIcon
               onClick={() => setShowMessageOptions(!showMessageOptions)}
-              className="h-8 w-8 cursor-pointer rounded-full p-1 transition-all hover:bg-slate-200 active:bg-slate-100"
+              className="h-8 w-8 cursor-pointer rounded-full p-1 transition-all active:bg-slate-800"
             />
             {showMessageOptions && (
-              <div className="absolute left-0 mt-2 w-48 origin-top-left divide-y divide-gray-100 rounded-md border border-gray-300 bg-white shadow-lg">
+              <div className="absolute left-0 mt-2 w-48 origin-top-left cursor-pointer divide-y divide-gray-100 rounded-md border border-gray-300 bg-red-700 shadow-lg transition-all hover:bg-red-800">
                 <button onClick={handleDeleteMessage} className="px-4 py-2">
-                  Delete message
+                  <Label className="font-semibold">Delete message</Label>
                 </button>
               </div>
             )}

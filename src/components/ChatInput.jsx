@@ -28,7 +28,7 @@ const ChatInput = ({ channelName }) => {
     inputRef.current.value = "";
   };
   return (
-    <Card className="w-full px-6 py-4">
+    <Card className="w-full px-6 py-4 ">
       <form
         className="flex items-center gap-x-2"
         onSubmit={sendMessage}
