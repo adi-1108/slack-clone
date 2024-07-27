@@ -109,7 +109,6 @@ const Sidebar = () => {
 
       if (docSnap.exists()) {
         setUserName(`${docSnap.data().fname} ${docSnap.data().lname}`);
-      } else {
       }
     };
     setTimeout(() => {
